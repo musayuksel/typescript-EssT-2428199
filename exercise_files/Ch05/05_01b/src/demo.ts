@@ -10,15 +10,18 @@ const currentUser = {
     }
 }
 
+@log
 class ContactRepository {
     private contacts: Contact[] = [];
 
     getContactById(id: number): Contact | null {
-        console.trace(`ContactRepository.getContactById: BEGIN`);
+        // console.trace(`ContactRepository.getContactById: BEGIN`);
+        //logging the method name, duplicate code
 
-        if (!currentUser.isInRole("ContactViewer")) {
-            throw Error("User not authorized to execute this action");
-        }
+        @authorize('ContactViewer')
+        // if (!currentUser.isInRole("ContactViewer")) {
+        //     throw Error("User not authorized to execute this action");
+        // }//it is checking the role of the user, duplicate code
 
         const contact = this.contacts.find(x => x.id === id);
 
@@ -28,11 +31,13 @@ class ContactRepository {
     }
 
     save(contact: Contact): void {
-        console.trace(`ContactRepository.save: BEGIN`);
+        // console.trace(`ContactRepository.save: BEGIN`);
+  //logging the method name, duplicate code
 
-        if (!currentUser.isInRole("ContactEditor")) {
-            throw Error("User not authorized to execute this action");
-        }
+        @authorize('ContactEditor')
+        // if (!currentUser.isInRole("ContactEditor")) {
+        //     throw Error("User not authorized to execute this action");
+        // }//it is checking the role of the user
 
         const existing = this.getContactById(contact.id);
 
