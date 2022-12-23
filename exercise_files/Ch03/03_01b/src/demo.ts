@@ -6,11 +6,15 @@ enum ContactStatus {
     New = "new"
 }
 
+type ContactStatusType = "active" | "inactive" | "new";//union type
+
+type ContactDoB = Date | number | string;//union type, because we will handle 3 different types of data in the function
 interface Contact {
     id: number;
     name: ContactName;
-    birthDate?: Date;
-    status?: ContactStatus;
+    birthDate?: ContactDoB;
+    // status?: ContactStatus;
+    status?: ContactStatusType;
 }
 
 interface Address {
@@ -20,6 +24,8 @@ interface Address {
     region: string;
     postalCode: string;
 }
+
+type ContactWithAddress = Contact & Address;//intersection type
 
 function getBirthDate(contact: Contact) {
     if (typeof contact.birthDate === "number") {
@@ -35,5 +41,6 @@ function getBirthDate(contact: Contact) {
 
 let primaryContact: Contact = {
     id: 12345,
-    name: "Jamie Johnson"
+    name: "Jamie Johnson",
+    status: 'active'//It will directly suggest the values of the type=> 'active' | 'inactive' | 'new'
 }
