@@ -16,7 +16,7 @@ interface Contact {
     status?: ContactStatus;
 }
 
-function toContact(nameOrContact) {
+function toContact(nameOrContact : string | Contact) : Contact {
     if (typeof nameOrContact === "object") {
         return {
             id: nameOrContact.id,
@@ -31,4 +31,10 @@ function toContact(nameOrContact) {
             status: "active"
         }
     }
+}
+
+const myType = { min: 10, max: 20 }
+function findMax(source : typeof myType) {
+    //normally I would create new interface for this.
+    return source.max
 }
