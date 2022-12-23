@@ -26,7 +26,20 @@ interface Query {
     matches(val): boolean;
 }
 
-type ContactQuery = Record<keyof Contact, Query>
+// type ContactQuery = Partial<Record<keyof Contact, Query>>;//use Partial to make all properties optional
+// type ContactQuery = Omit<
+//     Partial<Record<keyof Contact, Query>>,
+//     'address' | 'status'
+//     >;//Address and status are not optional
+
+type ContactQuery = Partial<
+    Pick<
+        Record<keyof Contact, Query>,
+        'id' | 'name'
+    >
+>;//Opposite of Omit =use only id and name. In case in the future we add more properties to Contact interface
+//if we don't want to use optional properties we can use Required instead of Partial
+type RequiredContactQuery = Required<ContactQuery>;//id and name are required
 
 function searchContacts(contacts: Contact[], query: ContactQuery) {
     return contacts.filter(contact => {
@@ -48,5 +61,6 @@ const filteredContacts = searchContacts(
     {
         id: { matches: (id) => id === 123 },
         name: { matches: (name) => name === "Carol Weaver" },
+        // status: { matches: (status) => status === "active" },//Error: status is not optional
     }
 );
