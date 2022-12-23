@@ -2,6 +2,7 @@ interface Contact {
   id: number;
   name: string;
   dob: Date;
+  email?: string; //optional
 }
 
 const contact: Contact = {
