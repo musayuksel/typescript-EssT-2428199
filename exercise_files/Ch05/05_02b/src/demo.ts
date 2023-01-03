@@ -13,6 +13,36 @@ const currentUser = {
     }
 }
 
+function authorize(target: any, property: string, descriptor: PropertyDescriptor) {
+    // const originalMethod = descriptor.value;
+
+    // descriptor.value = function () {
+    //     // ... do something with the original method
+    //     // ... and then return the result
+    // };
+
+    // return descriptor;
+
+    //return brand new descriptor
+    // return {
+    //     // ...add all the properties of the original descriptor and add a new value property,
+    // } as PropertyDescriptor;
+    const originalMethod = descriptor.value;
+    descriptor.value = function () {
+        if (!currentUser.isAuthenticated()) {
+            throw Error("User not authenticated");
+        }
+        try {
+            return originalMethod.apply(this, arguments);
+
+        } catch (error) {
+            //TODO: other error handling
+            throw error;
+        }
+    }
+
+}
+
 class ContactRepository {
     private contacts: Contact[] = [];
 
